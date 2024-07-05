@@ -118,7 +118,7 @@ export default function MainScene() {
     // like this
     // const vertices = icosGeo.attributes.position;
     // or like this
-    // @ts-expect-error buffer attribute
+    // @ts-ignore buffer attribute
     const buffAttr: Float32BufferAttribute = icosGeo.getAttribute("position");
 
     const vertices = buffAttr.array;
@@ -276,7 +276,7 @@ export default function MainScene() {
 
       {/* <boxGeometry args={[1, 1, 1]} /> */}
       {/* <shaderMaterial
-          // @ts-expect-error ref
+          // @ts-ignore ref
           ref={materialRef}
           // args={[{}]}
           vertexShader={vertexShader}

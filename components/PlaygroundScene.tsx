@@ -152,7 +152,7 @@ export default function PlaygroundScene() {
         {/* <boxGeometry args={[1, 1, 1]} /> */}
         <sphereGeometry args={[1, 34, 18]} />
         <shaderMaterial
-          // @ts-expect-error ref
+          // @ts-ignore ref
           ref={shaderRef}
           // args={[{}]}
           vertexShader={vertexShader}
