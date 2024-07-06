@@ -14,6 +14,9 @@ importers:
       '@react-three/fiber':
         specifier: ^8.16.8
         version: 8.16.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.166.1)
+      '@xstate/react':
+        specifier: ^4.1.1
+        version: 4.1.1(@types/react@18.3.3)(react@18.3.1)(xstate@5.14.0)
       bezier-easing:
         specifier: ^2.1.0
         version: 2.1.0
@@ -26,6 +29,9 @@ importers:
       eases:
         specifier: ^1.0.8
         version: 1.0.8
+      glsl-aastep:
+        specifier: ^1.0.1
+        version: 1.0.1
       glsl-hsl2rgb:
         specifier: ^1.1.0
         version: 1.1.0
@@ -53,6 +59,9 @@ importers:
       three:
         specifier: ^0.166.1
         version: 0.166.1
+      xstate:
+        specifier: ^5.14.0
+        version: 5.14.0
     devDependencies:
       '@types/eases':
         specifier: ^1.0.4
@@ -475,6 +484,15 @@ packages:
 
   '@webassemblyjs/wast-printer@1.12.1':
     resolution: {integrity: sha512-+X4WAlOisVWQMikjbcvY2e0rwPsKQ9F688lksZhBcPycBBuii3O7m8FACbDMWDojpAqvjIncrG8J0XHKyQfVeA==}
+
+  '@xstate/react@4.1.1':
+    resolution: {integrity: sha512-pFp/Y+bnczfaZ0V8B4LOhx3d6Gd71YKAPbzerGqydC2nsYN/mp7RZu3q/w6/kvI2hwR/jeDeetM7xc3JFZH2NA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      xstate: ^5.11.0
+    peerDependenciesMeta:
+      xstate:
+        optional: true
 
   '@xtuc/ieee754@1.2.0':
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
@@ -1183,6 +1201,9 @@ packages:
   globby@11.1.0:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
+
+  glsl-aastep@1.0.1:
+    resolution: {integrity: sha512-PkaadLzPyxlsCmKBd99FK6H1c8z+p4F6iPbc0noWy5zc5O73kejRvw4kzfxKdzE8cXm5OLhExPBP/X4h7rLGnw==}
 
   glsl-hsl2rgb@1.1.0:
     resolution: {integrity: sha512-dlxkgfTzjQ86DWngdozxRFqCSNWCoH186DmfZpLqt+JhtqdoeuI+/1TMKMULAw1FjFqfbTqAgSNXupNfjNSWQw==}
@@ -2342,6 +2363,15 @@ packages:
     resolution: {integrity: sha512-NjFKA0DidqPa5ciFcSrXnAltTtzz84ogy+NebPvfEgAck0+TNg4UJ4IN+fB7zRZfbgUf0syOo9MDxFkDSMuFaQ==}
     engines: {node: '>=4'}
 
+  use-isomorphic-layout-effect@1.1.2:
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   use-sync-external-store@1.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
     peerDependencies:
@@ -2419,6 +2449,9 @@ packages:
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  xstate@5.14.0:
+    resolution: {integrity: sha512-3c1H8dzebSODUSY1vM86zIE3Eg+VFzElvhklaF/ZTN5K2i6HsLc4j38qn9+TF2mHPTUFXrOn4M0Cxw9m63upLA==}
 
   xtend@2.2.0:
     resolution: {integrity: sha512-SLt5uylT+4aoXxXuwtQp5ZnMMzhDb1Xkg4pEqc00WUJCQifPfV9Ub1VrNhp9kXkrjZD2I2Hl8WnjP37jzZLPZw==}
@@ -2895,6 +2928,16 @@ snapshots:
     dependencies:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
+
+  '@xstate/react@4.1.1(@types/react@18.3.3)(react@18.3.1)(xstate@5.14.0)':
+    dependencies:
+      react: 18.3.1
+      use-isomorphic-layout-effect: 1.1.2(@types/react@18.3.3)(react@18.3.1)
+      use-sync-external-store: 1.2.0(react@18.3.1)
+    optionalDependencies:
+      xstate: 5.14.0
+    transitivePeerDependencies:
+      - '@types/react'
 
   '@xtuc/ieee754@1.2.0': {}
 
@@ -3833,6 +3876,8 @@ snapshots:
       ignore: 5.3.1
       merge2: 1.4.1
       slash: 3.0.0
+
+  glsl-aastep@1.0.1: {}
 
   glsl-hsl2rgb@1.1.0: {}
 
@@ -5061,6 +5106,12 @@ snapshots:
     dependencies:
       prepend-http: 2.0.0
 
+  use-isomorphic-layout-effect@1.1.2(@types/react@18.3.3)(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+    optionalDependencies:
+      '@types/react': 18.3.3
+
   use-sync-external-store@1.2.0(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -5172,6 +5223,8 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
+
+  xstate@5.14.0: {}
 
   xtend@2.2.0: {}
 

@@ -19,11 +19,6 @@ import {
   PerspectiveCamera,
   ShaderMaterial,
   Color,
-  IcosahedronGeometry,
-  Float32BufferAttribute,
-  SphereGeometry,
-  CircleGeometry,
-  BackSide,
 } from "three";
 
 // -------------------------------------------------------------
@@ -35,23 +30,23 @@ import {
   setSeed,
   range,
   pick,
-  gaussian,
 } from "canvas-sketch-util/random";
 // -------------------------------------------------------------
 
-import { bg_base } from "@/consts/styles";
+import { bg_base, bg_base_hex } from "@/consts/styles";
 
 // -------------------------------------------------------------
+import { usePlayheadBackForth } from "@/hooks/usePlayheadBackForth";
 import { usePlayhead } from "@/hooks/usePlayhead";
 // -------------------------------------------------------------
 
-import vertexShader from "@/shaders/default.vert";
-import fragmentShader from "@/shaders/default.frag";
+import fragmentShader from "@/shaders/playground/1_first/one.frag";
+import vertexShader from "@/shaders/playground/1_first/one.vert";
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
 
-export default function MainScene() {
+export default function One() {
   // ------------------------------------------------------
   // ------------------------------------------------------
   const zoom = 1;
@@ -72,10 +67,7 @@ export default function MainScene() {
 
   // --------------------------------------------------------
   // --------------------------------------------------------
-  const materialRef = useRef<ShaderMaterial | null>(null);
-
-  // const sphareGeoRef = useRef<SphereGeometry | null>(null);
-  // const pointsAmountRef = useRef<number>(0);
+  const shaderRef = useRef<ShaderMaterial | null>(null);
   // --------------------------------------------------------
   // --------------------------------------------------------
 
@@ -94,14 +86,13 @@ export default function MainScene() {
   const pall = pick(palettes);
 
   useEffect(() => {
+    // gl.setClearColor("#fff", 1);
     gl.setClearColor(bg_base, 1);
-    // gl.setClearColor(bg_base, 1);
     // gl.setClearColor(pick(pick(palettes)), 1);
 
-    const mainVec = new Vector3();
+    // const mainVec = new Vector3();
     // setLookatVector(mainVec);
-    // camera.lookAt(new Vector3());
-    camera.lookAt(mainVec);
+    camera.lookAt(new Vector3());
 
     // const directLight = new DirectionalLight("white", 2);
     // const ambientLight = new AmbientLight("#351430", 1);
@@ -111,116 +102,6 @@ export default function MainScene() {
 
     // ---------------------------------------------------
     // ---------------------------------------------------
-    // taking vertices from icosahedron geometry
-
-    const icosGeo = new IcosahedronGeometry(1, 0);
-
-    // like this
-    // const vertices = icosGeo.attributes.position;
-    // or like this
-    // @ts-ignore buffer attribute
-    const buffAttr: Float32BufferAttribute = icosGeo.getAttribute("position");
-
-    const vertices = buffAttr.array;
-
-    // use circle geometry instead of spheres
-    // const geom = new SphereGeometry(0.1, 16, 32);
-    // const geom = new CircleGeometry(0.6, 32);
-    /* const basicMater = new MeshBasicMaterial({
-        color: "crimson",
-        // wireframe: true,
-        side: BackSide,
-      }); */
-
-    const points: Vector3[] = [];
-
-    // const col = new Vector3(0.2, 0.19, 0.11);
-
-    for (let i = 0; i < vertices.length; i += 3) {
-      const x = vertices[i];
-      const y = vertices[i + 1];
-      const z = vertices[i + 2];
-
-      points.push(new Vector3(x, y, z));
-    }
-
-    const geo = new SphereGeometry(1, 16, 32);
-
-    const mat = new ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      uniforms: {
-        time: {
-          value: initialElapsedTime,
-        },
-        aspect: {
-          value: aspect,
-        },
-        //
-        stretch: {
-          value: 1,
-        },
-        //
-        color: {
-          value: new Vector3(0.7, 0.3, 0.2),
-        },
-
-        points: {
-          value: points,
-        },
-        //
-
-        //
-        foo: {
-          value: 6,
-        },
-      },
-      defines: {
-        POINT_COUNT: points.length,
-      },
-    });
-
-    materialRef.current = mat;
-
-    const mesh = new Mesh(geo, mat);
-
-    scene.add(mesh);
-
-    /* if (materialRef.current) {
-      materialRef.current.defines["POINT_COUNT"] = points.length;
-      materialRef.current.uniforms["points"].value = points;
-    }
-    */
-
-    /* points.forEach((vec3) => {
-      // points.push([x, y, z]);
-
-      const shaderMaterial = new ShaderMaterial({
-        vertexShader: circleVertex,
-        fragmentShader: circleFragment,
-        defines: {
-          POINT_COUNT: points.length,
-        },
-        uniforms: {
-          // points: { value: points },
-          points: {
-            value: points,
-          },
-          color: { value: col },
-        },
-      });
-
-      const mesh = new Mesh(geom, shaderMaterial);
-
-      mesh.position.set(vec3.x, vec3.y, vec3.z);
-      mesh.scale.setScalar(0.17 * gaussian());
-      mesh.lookAt(mainVec);
-      scene.add(mesh);
-    }); */
-
-    // pointsAmountRef.current = pointsCount;
-
-    //
 
     // pointLight.position.set(14, 31, -31).multiplyScalar(3);
   }, []);
@@ -252,12 +133,13 @@ export default function MainScene() {
       { viewport: { aspect }, scene: sc, clock: { elapsedTime: time } },
       delta
     ) => {
-      if (materialRef.current) {
+      if (shaderRef.current) {
         // console.log({ time });
-        materialRef.current.uniforms.aspect.value = aspect;
-        materialRef.current.uniforms.time.value = time;
 
-        materialRef.current.uniforms.stretch.value = time * 0.2;
+        shaderRef.current.uniforms.aspect.value = aspect;
+        shaderRef.current.uniforms.time.value = time;
+
+        shaderRef.current.uniforms.stretch.value = time * 0.2;
       }
     }
   );
@@ -265,22 +147,16 @@ export default function MainScene() {
   return (
     <>
       {/* <axesHelper /> */}
-      <pointLight color={"white"} intensity={4} position={[-5, 5, 5]} />
-      {/* <mesh> */}
-      {/* <icosahedronGeometry
-          ref={icosGeoRef}
-          args={[1, 0]}
-        /> */}
-
-      {/* <sphereGeometry args={[1, 16, 32]} /> */}
-
-      {/* <boxGeometry args={[1, 1, 1]} /> */}
-      {/* <shaderMaterial
+      {/* <pointLight color={"crimson"} intensity={4} position={[-5, 5, 5]} /> */}
+      <mesh>
+        {/* <boxGeometry args={[1, 1, 1]} /> */}
+        <sphereGeometry args={[1, 34, 18]} />
+        <shaderMaterial
           // @ts-ignore ref
-          ref={materialRef}
+          ref={shaderRef}
           // args={[{}]}
           vertexShader={vertexShader}
-          fragmentShader={circleFragment}
+          fragmentShader={fragmentShader}
           // wireframe
           uniforms={{
             time: {
@@ -296,21 +172,16 @@ export default function MainScene() {
             //
             color: {
               value: new Color("#fff"),
+              // value: new Color("#000"),
             },
-
-           
-            points: {
-              value: [],
-            },
-            //
 
             //
             foo: {
               value: 6,
             },
           }}
-        /> */}
-      {/* </mesh> */}
+        />
+      </mesh>
     </>
   );
 }

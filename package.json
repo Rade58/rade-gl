@@ -11,10 +11,12 @@
   "dependencies": {
     "@react-three/drei": "^9.108.1",
     "@react-three/fiber": "^8.16.8",
+    "@xstate/react": "^4.1.1",
     "bezier-easing": "^2.1.0",
     "canvas-sketch-util": "^1.10.0",
     "canvas-sketch-util-types": "^0.5.1",
     "eases": "^1.0.8",
+    "glsl-aastep": "^1.0.1",
     "glsl-hsl2rgb": "^1.1.0",
     "glsl-noise": "^0.0.0",
     "glslify": "^7.1.1",
@@ -23,7 +25,8 @@
     "react": "^18",
     "react-dom": "^18",
     "simplex-noise": "^4.0.1",
-    "three": "^0.166.1"
+    "three": "^0.166.1",
+    "xstate": "^5.14.0"
   },
   "devDependencies": {
     "@types/eases": "^1.0.4",

@@ -9,70 +9,78 @@ import {
   useProgress,
 } from "@react-three/drei";
 
+// playground scenes
+import SceneOne from "./playground/One";
+import SceneTwo from "./playground/Two";
+import SeaScene from "./playground/SeaScene";
 //
-import MainScene from "./MainScene";
-import PlaygroundScene from "./PlaygroundScene";
+
+//
+import ControlBar from "./controls/ControlBar";
 //
 
 export default function Scene() {
   // const canvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
-    <Canvas
-      // set to true if you want ortographic camera
-      // ------ ortographic camera ------
-      // orthographic={true}
-      camera={{
-        // ---------------------------------------
-        // ---------------------------------------
-        // ------ ortographic camera------
-        // isOrthographicCamera: true,
-        // near: -100,
-        // far: 100,
-        // ---------------------------------------
-        // ------ perspective camera ------
-        // isPerspectiveCamera: true,
-        fov: 50,
-        // near: 0.1,
-        near: 0.01,
-        far: 100,
-        position: [2, 2, -4],
-        // ---------------------------------------
-        // aspect: 1, // don't adjust this in any case,
-        // it will mess up aspect ratio, don't set it especially
-        // for ortographic camera since
-        // we are doing it already in scene
+    <>
+      <Canvas
+        // set to true if you want ortographic camera
+        // ------ ortographic camera ------
+        // orthographic={true}
+        camera={{
+          // ---------------------------------------
+          // ---------------------------------------
+          // ------ ortographic camera------
+          // isOrthographicCamera: true,
+          // near: -100,
+          // far: 100,
+          // ---------------------------------------
+          // ------ perspective camera ------
+          isPerspectiveCamera: true,
+          fov: 50,
+          near: 0.01,
+          far: 100,
+          // position: [2, 2, -4],
+          // ---------------------------------------
+          // aspect: 1, // don't adjust this in any case,
+          // it will mess up aspect ratio, don't set it especially
+          // for ortographic camera since
+          // we are doing it already in scene
 
-        /* lookAt: (ve3) => {
+          /* lookAt: (ve3) => {
           console.log({ ve3 });
         }, */
-      }}
-      // ref={canvasRef}
-      gl={{
-        antialias: true,
-      }}
-      dpr={[1, 1.5]}
-      className="canvas-holder"
-    >
-      <Suspense fallback={<Loader />}>
-        {/* <OrbitControls
-        // enableZoom={false}
-        /> */}
-        {/* Scroll controls will block useFrame for some reason */}
-        {/* <ScrollControls
+        }}
+        // ref={canvasRef}
+        gl={{
+          antialias: true,
+        }}
+        dpr={[1, 1.5]}
+        className="canvas-holder"
+      >
+        <Suspense fallback={<Loader />}>
+          {/* <OrbitControls
+          // enableZoom={false}
+          /> */}
+          {/* Scroll controls will block useFrame for some reason */}
+          {/* <ScrollControls
           damping={0.5}
           // pages={4}
           infinite
-        > */}
-        {/* ---------------------------------- */}
-        {/* ---------------------------------- */}
-        {/* <MainScene /> */}
-        <PlaygroundScene />
-        {/* ---------------------------------- */}
-        {/* ---------------------------------- */}
-        {/* </ScrollControls> */}
-      </Suspense>
-    </Canvas>
+          > */}
+          {/* ---------------------------------- */}
+          {/* ---------------------------------- */}
+          {/* <SceneOne /> */}
+          {/* <SceneTwo /> */}
+          <SeaScene />
+          {/* ---------------------------------- */}
+          {/* ---------------------------------- */}
+          {/* </ScrollControls> */}
+        </Suspense>
+      </Canvas>
+      <ControlBar />
+    </>
   );
 }
 

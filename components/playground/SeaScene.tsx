@@ -19,6 +19,12 @@ import {
   PerspectiveCamera,
   ShaderMaterial,
   Color,
+  IcosahedronGeometry,
+  Float32BufferAttribute,
+  SphereGeometry,
+  CircleGeometry,
+  BackSide,
+  PlaneGeometry,
 } from "three";
 
 // -------------------------------------------------------------
@@ -30,26 +36,28 @@ import {
   setSeed,
   range,
   pick,
+  gaussian,
 } from "canvas-sketch-util/random";
 // -------------------------------------------------------------
 
-import { bg_base, bg_base_hex } from "@/consts/styles";
+import { bg_base } from "@/consts/styles";
 
 // -------------------------------------------------------------
-import { usePlayheadBackForth } from "@/hooks/usePlayheadBackForth";
 import { usePlayhead } from "@/hooks/usePlayhead";
-// -------------------------------------------------------------
-
-import fragmentShader from "@/shaders/playground/1_first/one.frag";
-import vertexShader from "@/shaders/playground/1_first/one.vert";
 
 // -------------------------------------------------------------
+// ------------------------ SHADERS ----------------------------
+//
+import seaVertex from "@/shaders/sea/index.vert";
+import seaFragment from "@/shaders/sea/index.frag";
+
+// -------------------------------------------------------------
 // -------------------------------------------------------------
 
-export default function PlaygroundScene() {
+export default function SeaScene() {
   // ------------------------------------------------------
   // ------------------------------------------------------
-  const zoom = 1;
+  const zoom = 2;
   // ------------------------------------------------------
   // ------------------------------------------------------
 
@@ -63,15 +71,17 @@ export default function PlaygroundScene() {
 
   // ------ CAMMERA, SCENE, LIGHTS, CONTROL
   const scene = sc as unknown as Scene;
-  const camera = cam as unknown as PerspectiveCamera; /* OrthographicCamera */
+  // const camera = cam as unknown as PerspectiveCamera;
+  const camera = cam as unknown as OrthographicCamera;
 
   // --------------------------------------------------------
   // --------------------------------------------------------
-  const shaderRef = useRef<ShaderMaterial | null>(null);
-  // --------------------------------------------------------
-  // --------------------------------------------------------
+  const materialRef = useRef<ShaderMaterial | null>(null);
 
-  setSeed("shaderfinal", {});
+  // const sphareGeoRef = useRef<SphereGeometry | null>(null);
+  // const pointsAmountRef = useRef<number>(0);
+  // --------------------------------------------------------
+  // --------------------------------------------------------
 
   // console.log({ aspect });
   // console.log({ clock });
@@ -86,13 +96,14 @@ export default function PlaygroundScene() {
   const pall = pick(palettes);
 
   useEffect(() => {
-    // gl.setClearColor("#fff", 1);
     gl.setClearColor(bg_base, 1);
+    // gl.setClearColor(bg_base, 1);
     // gl.setClearColor(pick(pick(palettes)), 1);
 
-    // const mainVec = new Vector3();
+    const mainVec = new Vector3();
     // setLookatVector(mainVec);
-    camera.lookAt(new Vector3());
+    // camera.lookAt(new Vector3());
+    camera.lookAt(mainVec);
 
     // const directLight = new DirectionalLight("white", 2);
     // const ambientLight = new AmbientLight("#351430", 1);
@@ -103,28 +114,58 @@ export default function PlaygroundScene() {
     // ---------------------------------------------------
     // ---------------------------------------------------
 
-    // pointLight.position.set(14, 31, -31).multiplyScalar(3);
-  }, []);
+    const geo = new PlaneGeometry(108, 108, 168, 168);
+
+    const mat = new ShaderMaterial({
+      vertexShader: seaVertex,
+      fragmentShader: seaFragment,
+      uniforms: {
+        time: {
+          value: initialElapsedTime,
+        },
+        color: {
+          // value: new Vector3(0.7, 0.3, 0.2),
+          value: new Color("#971245"),
+        },
+        circleSize: { value: 0.2 },
+      },
+      // defines: {
+      // POINT_COUNT: 10,
+      // },
+      wireframe: true,
+      vertexColors: true,
+    });
+
+    if (!materialRef.current) {
+      materialRef.current = mat;
+    }
+
+    const mesh = new Mesh(geo, mat);
+    scene.add(mesh);
+  }, [materialRef]);
 
   // handle resize for ortographic camera
   // useEffect(() => {
-  if (camera instanceof OrthographicCamera) {
-    console.log({ camera });
+  // if (camera instanceof OrthographicCamera) {
+  console.log({ camera });
 
-    camera.left = -zoom * aspect;
-    camera.right = zoom * aspect;
-    camera.top = zoom;
-    camera.bottom = -zoom;
+  camera.left = -zoom * aspect;
+  camera.right = zoom * aspect;
+  camera.top = zoom;
+  camera.bottom = -zoom;
 
-    // near and far already defined
-    // but you can define it here if you want
+  // near and far already defined
+  // but you can define it here if you want
 
-    camera.position.set(zoom, zoom, zoom);
+  camera.position.set(zoom, zoom, zoom);
 
-    camera.updateProjectionMatrix();
-    //
-    // console.log("updated");
-  }
+  camera.position.set(0, 0, 20);
+  // camera.position.y = 0;
+
+  camera.updateProjectionMatrix();
+  //
+  // console.log("updated");
+  // }
 
   // ------------------------------------------------------------
   // ANIMATION FRAME
@@ -133,55 +174,19 @@ export default function PlaygroundScene() {
       { viewport: { aspect }, scene: sc, clock: { elapsedTime: time } },
       delta
     ) => {
-      if (shaderRef.current) {
+      if (materialRef.current) {
         // console.log({ time });
-
-        shaderRef.current.uniforms.aspect.value = aspect;
-        shaderRef.current.uniforms.time.value = time;
-
-        shaderRef.current.uniforms.stretch.value = time * 0.2;
+        // materialRef.current.uniforms.circleSize.value = 2;
+        // console.log({ time });
+        materialRef.current.uniforms.time.value = time * 0.1;
       }
     }
   );
 
   return (
     <>
-      {/* <axesHelper /> */}
-      {/* <pointLight color={"crimson"} intensity={4} position={[-5, 5, 5]} /> */}
-      <mesh>
-        {/* <boxGeometry args={[1, 1, 1]} /> */}
-        <sphereGeometry args={[1, 34, 18]} />
-        <shaderMaterial
-          // @ts-ignore ref
-          ref={shaderRef}
-          // args={[{}]}
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
-          // wireframe
-          uniforms={{
-            time: {
-              value: initialElapsedTime,
-            },
-            aspect: {
-              value: aspect,
-            },
-            //
-            stretch: {
-              value: 1,
-            },
-            //
-            color: {
-              value: new Color("#fff"),
-              // value: new Color("#000"),
-            },
-
-            //
-            foo: {
-              value: 6,
-            },
-          }}
-        />
-      </mesh>
+      <axesHelper />
+      <pointLight color={"white"} intensity={4} position={[-5, 5, 5]} />
     </>
   );
 }

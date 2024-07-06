@@ -1,0 +1,5 @@
+.control_bar {
+  @apply border border-teal-600;
+  @apply fixed left-0 right-0 bottom-0 h-9;
+}
+
