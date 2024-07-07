@@ -56,8 +56,8 @@ import { usePlayhead } from "@/hooks/usePlayhead";
 // -------------------------------------------------------------
 // ------------------------ SHADERS ----------------------------
 //
-import seaVertex from "@/shaders/playground/sea_2/index.vert";
-import seaFragment from "@/shaders/playground/sea_2/index.frag";
+import seaVertex from "@/shaders/primary/sea/index.vert";
+import seaFragment from "@/shaders/primary/sea/index.frag";
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
@@ -65,7 +65,7 @@ import seaFragment from "@/shaders/playground/sea_2/index.frag";
 // const pall = pick(palettes);
 
 // eslint-disable-next-line
-export default function Sea2Scene() {
+export default function MainScene() {
   // ------------------------------------------------------
   // ------------------------------------------------------
   // ------------------------------------------------------

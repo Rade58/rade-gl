@@ -9,10 +9,13 @@ import {
   useProgress,
 } from "@react-three/drei";
 
+import SetupScene from "./SetupScene";
 // playground scenes
-import SceneOne from "./playground/One";
-import SceneTwo from "./playground/Two";
-import Sea2Scene from "./playground/Sea2Scene";
+// import SceneOne from "./playground/One";
+// import SceneTwo from "./playground/Two";
+// import Sea2Scene from "./playground/Sea2Scene";
+// main scene
+import MainScene from "./MainScene";
 //
 
 //
@@ -71,9 +74,11 @@ export default function Scene() {
           > */}
           {/* ---------------------------------- */}
           {/* ---------------------------------- */}
+          <SetupScene />
           {/* <SceneOne /> */}
           {/* <SceneTwo /> */}
-          <Sea2Scene />
+          {/* <Sea2Scene /> */}
+          <MainScene />
           {/* ---------------------------------- */}
           {/* ---------------------------------- */}
           {/* </ScrollControls> */}
