@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { Canvas /* , useThree */ } from "@react-three/fiber";
 import {
   Html,
@@ -12,7 +12,7 @@ import {
 // playground scenes
 import SceneOne from "./playground/One";
 import SceneTwo from "./playground/Two";
-import SeaScene from "./playground/SeaScene";
+import Sea2Scene from "./playground/Sea2Scene";
 //
 
 //
@@ -20,7 +20,7 @@ import ControlBar from "./controls/ControlBar";
 //
 
 export default function Scene() {
-  // const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   return (
     <>
@@ -52,12 +52,12 @@ export default function Scene() {
           console.log({ ve3 });
         }, */
         }}
-        // ref={canvasRef}
         gl={{
           antialias: true,
         }}
         dpr={[1, 1.5]}
         className="canvas-holder"
+        ref={canvasRef}
       >
         <Suspense fallback={<Loader />}>
           {/* <OrbitControls
@@ -73,7 +73,7 @@ export default function Scene() {
           {/* ---------------------------------- */}
           {/* <SceneOne /> */}
           {/* <SceneTwo /> */}
-          <SeaScene />
+          <Sea2Scene />
           {/* ---------------------------------- */}
           {/* ---------------------------------- */}
           {/* </ScrollControls> */}

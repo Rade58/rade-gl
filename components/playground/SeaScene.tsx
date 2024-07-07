@@ -48,8 +48,8 @@ import { usePlayhead } from "@/hooks/usePlayhead";
 // -------------------------------------------------------------
 // ------------------------ SHADERS ----------------------------
 //
-import seaVertex from "@/shaders/sea/index.vert";
-import seaFragment from "@/shaders/sea/index.frag";
+import seaVertex from "@/shaders/playground/sea/index.vert";
+import seaFragment from "@/shaders/playground/sea/index.frag";
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
@@ -127,7 +127,7 @@ export default function SeaScene() {
           // value: new Vector3(0.7, 0.3, 0.2),
           value: new Color("#971245"),
         },
-        circleSize: { value: 0.2 },
+        circleSize: { value: 0 },
       },
       // defines: {
       // POINT_COUNT: 10,
@@ -141,31 +141,33 @@ export default function SeaScene() {
     }
 
     const mesh = new Mesh(geo, mat);
+
+    camera.position.set(0, 0, 20);
+
     scene.add(mesh);
   }, [materialRef]);
 
   // handle resize for ortographic camera
   // useEffect(() => {
-  // if (camera instanceof OrthographicCamera) {
-  console.log({ camera });
+  if (camera instanceof OrthographicCamera) {
+    console.log({ camera });
 
-  camera.left = -zoom * aspect;
-  camera.right = zoom * aspect;
-  camera.top = zoom;
-  camera.bottom = -zoom;
+    camera.left = -zoom * aspect;
+    camera.right = zoom * aspect;
+    camera.top = zoom;
+    camera.bottom = -zoom;
 
-  // near and far already defined
-  // but you can define it here if you want
+    // near and far already defined
+    // but you can define it here if you want
 
-  camera.position.set(zoom, zoom, zoom);
+    camera.position.set(zoom, zoom, zoom);
 
-  camera.position.set(0, 0, 20);
-  // camera.position.y = 0;
+    // camera.position.y = 0;
 
-  camera.updateProjectionMatrix();
-  //
-  // console.log("updated");
-  // }
+    camera.updateProjectionMatrix();
+    //
+    // console.log("updated");
+  }
 
   // ------------------------------------------------------------
   // ANIMATION FRAME
